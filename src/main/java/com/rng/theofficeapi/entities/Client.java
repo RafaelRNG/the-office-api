@@ -1,7 +1,5 @@
 package com.rng.theofficeapi.entities;
 
-import org.apache.tomcat.jni.Address;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +19,9 @@ public class Client implements Serializable {
     private String cnpj;
     private String email;
     private String cellPhone;
+
+    @OneToMany(mappedBy = "client")
+    private List<Address> addresses = new ArrayList<>();
 
     public Client(){}
 
@@ -62,6 +63,22 @@ public class Client implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCellPhone() {
+        return cellPhone;
+    }
+
+    public void setCellPhone(String cellPhone) {
+        this.cellPhone = cellPhone;
+    }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
     }
 
     @Override

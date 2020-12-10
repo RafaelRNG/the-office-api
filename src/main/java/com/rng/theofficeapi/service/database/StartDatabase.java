@@ -1,10 +1,7 @@
 package com.rng.theofficeapi.service.database;
 
 import com.rng.theofficeapi.entities.*;
-import com.rng.theofficeapi.repositories.CategoryRepository;
-import com.rng.theofficeapi.repositories.ClientRepository;
-import com.rng.theofficeapi.repositories.ProductRepository;
-import com.rng.theofficeapi.repositories.SalesmanRepository;
+import com.rng.theofficeapi.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +21,9 @@ public class StartDatabase {
 
     @Autowired
     private ClientRepository clientRepository;
+
+    @Autowired
+    private AddressRepository addressRepository;
 
     public void database(){
         Salesman jim = new Salesman(null, "Jim Halpert", "34g3k1049fd04");
@@ -47,11 +47,18 @@ public class StartDatabase {
         usapel.setCategories(Arrays.asList(couche));
 
         Client ryan = new Client(null, "Ryan", "38388989238928923", "ryan@mail.com", "3393237964");
-        Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "0989087");
+        Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "076989087");
+
+        Address address1 = new Address(null, "Rua srBagner", "265", "CAPKNG", "NEW YORK","reuig", null, ryan);
+        Address address2 = new Address(null, "Rua MCDonald", "396", "flangfung", "washington","dc", "next time", ashley);
+
+        ryan.setAddresses(Arrays.asList(address1));
+        ashley.setAddresses(Arrays.asList(address2));
 
         salesmanRepository.saveAll(Arrays.asList(jim, pam, dwight, andy, stanley));
         categoryRepository.saveAll(Arrays.asList(sulfite, couche, reciclato, kraft, vegetal, duoDesign, duplex));
         productRepository.saveAll(Arrays.asList(chamex, usapel));
         clientRepository.saveAll(Arrays.asList(ryan, ashley));
+        addressRepository.saveAll(Arrays.asList(address1, address2));
     }
 }
