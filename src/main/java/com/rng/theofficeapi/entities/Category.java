@@ -2,6 +2,8 @@ package com.rng.theofficeapi.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +18,9 @@ public class Category implements Serializable {
     private String title;
 
     public Category(){}
+
+    @ManyToMany(mappedBy = "categories")
+    public List<Product> products = new ArrayList<>();
 
     public Category(Long id, String title) {
         this.id = id;
@@ -36,6 +41,14 @@ public class Category implements Serializable {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 
     @Override
