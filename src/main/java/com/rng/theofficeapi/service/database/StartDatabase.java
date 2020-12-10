@@ -1,9 +1,8 @@
 package com.rng.theofficeapi.service.database;
 
-import com.rng.theofficeapi.entities.Category;
-import com.rng.theofficeapi.entities.Product;
-import com.rng.theofficeapi.entities.Salesman;
+import com.rng.theofficeapi.entities.*;
 import com.rng.theofficeapi.repositories.CategoryRepository;
+import com.rng.theofficeapi.repositories.ClientRepository;
 import com.rng.theofficeapi.repositories.ProductRepository;
 import com.rng.theofficeapi.repositories.SalesmanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +21,9 @@ public class StartDatabase {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public void database(){
         Salesman jim = new Salesman(null, "Jim Halpert", "34g3k1049fd04");
@@ -44,8 +46,12 @@ public class StartDatabase {
         chamex.setCategories(Arrays.asList(sulfite));
         usapel.setCategories(Arrays.asList(couche));
 
+        Client ryan = new Client(null, "Ryan", "38388989238928923", "ryan@mail.com", "3393237964");
+        Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "0989087");
+
         salesmanRepository.saveAll(Arrays.asList(jim, pam, dwight, andy, stanley));
         categoryRepository.saveAll(Arrays.asList(sulfite, couche, reciclato, kraft, vegetal, duoDesign, duplex));
         productRepository.saveAll(Arrays.asList(chamex, usapel));
+        clientRepository.saveAll(Arrays.asList(ryan, ashley));
     }
 }
