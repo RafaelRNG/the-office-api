@@ -2,6 +2,7 @@ package com.rng.theofficeapi.service.database;
 
 import com.rng.theofficeapi.entities.*;
 import com.rng.theofficeapi.repositories.*;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,9 @@ public class StartDatabase {
 
     @Autowired
     private AddressRepository addressRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
 
     public void database(){
         Salesman jim = new Salesman(null, "Jim Halpert", "34g3k1049fd04");
@@ -52,13 +56,25 @@ public class StartDatabase {
         Address address1 = new Address(null, "Rua srBagner", "265", "CAPKNG", "NEW YORK","reuig", null, ryan);
         Address address2 = new Address(null, "Rua MCDonald", "396", "flangfung", "washington","dc", "next time", ashley);
 
-        ryan.setAddresses(Arrays.asList(address1));
-        ashley.setAddresses(Arrays.asList(address2));
+        ryan.setAddress(address1);
+        ashley.setAddress(address2);
+
+        Order order1 = new Order(null, ryan, jim, ryan.getAddress());
+        Order order2 = new Order(null, ryan, dwight, ryan.getAddress());
+        Order order3 = new Order(null, ashley, pam, ashley.getAddress());
+
+        jim.setOrders(Arrays.asList(order1));
+        dwight.setOrders(Arrays.asList(order2));
+        pam.setOrders(Arrays.asList(order3));
+
+        ryan.setOrders(Arrays.asList(order1, order2));
+        ashley.setOrders(Arrays.asList(order3));
 
         salesmanRepository.saveAll(Arrays.asList(jim, pam, dwight, andy, stanley));
         categoryRepository.saveAll(Arrays.asList(sulfite, couche, reciclato, kraft, vegetal, duoDesign, duplex));
         productRepository.saveAll(Arrays.asList(chamex, usapel));
         clientRepository.saveAll(Arrays.asList(ryan, ashley));
         addressRepository.saveAll(Arrays.asList(address1, address2));
+        orderRepository.saveAll(Arrays.asList(order1, order2, order3));
     }
 }

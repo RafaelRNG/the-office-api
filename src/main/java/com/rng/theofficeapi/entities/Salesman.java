@@ -2,6 +2,8 @@ package com.rng.theofficeapi.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +17,9 @@ public class Salesman implements Serializable {
     private Long id;
     private String name;
     private String identification;
+
+    @OneToMany(mappedBy = "salesman")
+    private List<Order> orders = new ArrayList<>();
 
     public Salesman(){}
 
@@ -46,6 +51,14 @@ public class Salesman implements Serializable {
 
     public void setIdentification(String identification) {
         this.identification = identification;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

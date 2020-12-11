@@ -20,8 +20,12 @@ public class Client implements Serializable {
     private String email;
     private String cellPhone;
 
+    @Transient
+    @OneToOne(mappedBy = "client")
+    private Address address;
+
     @OneToMany(mappedBy = "client")
-    private List<Address> addresses = new ArrayList<>();
+    private List<Order> orders = new ArrayList<>();
 
     public Client(){}
 
@@ -73,12 +77,20 @@ public class Client implements Serializable {
         this.cellPhone = cellPhone;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
     }
 
     @Override
