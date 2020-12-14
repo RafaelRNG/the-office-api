@@ -1,12 +1,14 @@
 package com.rng.theofficeapi.service.database;
 
 import com.rng.theofficeapi.entities.*;
+import com.rng.theofficeapi.entities.enums.PaymentStatus;
 import com.rng.theofficeapi.repositories.*;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.Date;
 
 @Service
 public class StartDatabase {
@@ -28,6 +30,9 @@ public class StartDatabase {
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     public void database(){
         Salesman jim = new Salesman(null, "Jim Halpert", "34g3k1049fd04");
@@ -59,9 +64,14 @@ public class StartDatabase {
         ryan.setAddress(address1);
         ashley.setAddress(address2);
 
-        Order order1 = new Order(null, ryan, jim, ryan.getAddress());
-        Order order2 = new Order(null, ryan, dwight, ryan.getAddress());
-        Order order3 = new Order(null, ashley, pam, ashley.getAddress());
+        Order order1 = new Order(null, new Date(), ryan, jim, address1);
+        Order order2 = new Order(null, new Date(), ryan, dwight, ryan.getAddress());
+        Order order3 = new Order(null, new Date(),ashley, pam, ashley.getAddress());
+
+        Payment payment1 = new PaymentWithBillet(null, PaymentStatus.PENDING, order1, new Date(), new Date());
+        Payment payment2 = new PaymentWithCard(null, PaymentStatus.CANCELED, order2, 15L);
+        order1.setPayment(payment1);
+        order2.setPayment(payment2);
 
         jim.setOrders(Arrays.asList(order1));
         dwight.setOrders(Arrays.asList(order2));
@@ -76,5 +86,6 @@ public class StartDatabase {
         clientRepository.saveAll(Arrays.asList(ryan, ashley));
         addressRepository.saveAll(Arrays.asList(address1, address2));
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));
+        paymentRepository.saveAll(Arrays.asList(payment1, payment2));
     }
 }

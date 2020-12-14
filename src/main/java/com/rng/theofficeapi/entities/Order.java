@@ -1,7 +1,10 @@
 package com.rng.theofficeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -14,6 +17,9 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
+    private Date date;
+
     @ManyToOne
     private Client client;
 
@@ -23,10 +29,14 @@ public class Order implements Serializable {
     @ManyToOne
     private Address address;
 
+    @OneToOne(mappedBy="order", cascade = CascadeType.ALL)
+    private Payment payment;
+
     public Order(){}
 
-    public Order(Long id, Client client, Salesman salesman, Address address) {
+    public Order(Long id, Date date, Client client, Salesman salesman, Address address) {
         this.id = id;
+        this.date = date;
         this.client = client;
         this.salesman = salesman;
         this.address = address;
@@ -38,6 +48,14 @@ public class Order implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public Client getClient() {
@@ -62,6 +80,14 @@ public class Order implements Serializable {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 
     @Override

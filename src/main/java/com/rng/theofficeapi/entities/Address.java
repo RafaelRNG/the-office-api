@@ -25,9 +25,6 @@ public class Address implements Serializable {
     @OneToOne
     private Client client;
 
-    @OneToMany(mappedBy = "address")
-    private List<Order> orders = new ArrayList<>();
-
     public Address(){}
 
     public Address(Long id, String street, String number, String neighborhood, String city, String state, String complement, Client client) {
@@ -103,14 +100,6 @@ public class Address implements Serializable {
 
     public void setClient(Client client) {
         this.client = client;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
     }
 
     @Override
