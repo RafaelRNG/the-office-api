@@ -1,5 +1,7 @@
 package com.rng.theofficeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -20,6 +22,7 @@ public class Product implements Serializable {
     @JoinTable(name = "product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.product")
     private List<OrderItem> orders = new ArrayList<>();
 
