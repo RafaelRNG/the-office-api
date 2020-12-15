@@ -34,6 +34,9 @@ public class StartDatabase {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+
     public void database(){
         Salesman jim = new Salesman(null, "Jim Halpert", "34g3k1049fd04");
         Salesman pam = new Salesman(null, "Pam Beesly", "938278fduf2903");
@@ -80,6 +83,9 @@ public class StartDatabase {
         ryan.setOrders(Arrays.asList(order1, order2));
         ashley.setOrders(Arrays.asList(order3));
 
+        OrderItem orderItem1 = new OrderItem(order1, chamex, 0.0, 5L, 20.00);
+        OrderItem orderItem2 = new OrderItem(order1, usapel, 0.0, 3L, 13.00);
+
         salesmanRepository.saveAll(Arrays.asList(jim, pam, dwight, andy, stanley));
         categoryRepository.saveAll(Arrays.asList(sulfite, couche, reciclato, kraft, vegetal, duoDesign, duplex));
         productRepository.saveAll(Arrays.asList(chamex, usapel));
@@ -87,5 +93,6 @@ public class StartDatabase {
         addressRepository.saveAll(Arrays.asList(address1, address2));
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));
         paymentRepository.saveAll(Arrays.asList(payment1, payment2));
+        orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2));
     }
 }
