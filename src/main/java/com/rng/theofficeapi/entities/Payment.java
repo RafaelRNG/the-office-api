@@ -1,5 +1,6 @@
 package com.rng.theofficeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.rng.theofficeapi.entities.enums.PaymentStatus;
 
 import javax.persistence.*;

@@ -1,6 +1,7 @@
 package com.rng.theofficeapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
@@ -20,18 +21,22 @@ public class Order implements Serializable {
     @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date date;
 
+    @JsonIgnore
     @ManyToOne
     private Client client;
 
+    @JsonIgnore
     @ManyToOne
     private Salesman salesman;
 
     @ManyToOne
     private Address address;
 
+    @JsonIgnore
     @OneToOne(mappedBy="order", cascade = CascadeType.ALL)
     private Payment payment;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "id.order")
     private List<OrderItem> products = new ArrayList<>();
 

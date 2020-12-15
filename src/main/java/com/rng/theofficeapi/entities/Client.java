@@ -20,8 +20,7 @@ public class Client implements Serializable {
     private String email;
     private String cellPhone;
 
-    @Transient
-    @OneToOne(mappedBy = "client")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private Address address;
 
     @OneToMany(mappedBy = "client")

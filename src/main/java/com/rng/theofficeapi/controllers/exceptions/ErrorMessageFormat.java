@@ -1,11 +1,15 @@
 package com.rng.theofficeapi.controllers.exceptions;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 public class ErrorMessageFormat {
 
     private Integer status;
     private String message;
+
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date date;
 
     public ErrorMessageFormat(){}
