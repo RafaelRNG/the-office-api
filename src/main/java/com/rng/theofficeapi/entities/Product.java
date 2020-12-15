@@ -21,7 +21,7 @@ public class Product implements Serializable {
     private List<Category> categories = new ArrayList<>();
 
     @OneToMany(mappedBy = "id.product")
-    private Set<OrderItem> orders = new HashSet<>();
+    private List<OrderItem> orders = new ArrayList<>();
 
     public Product(){}
 
@@ -63,11 +63,11 @@ public class Product implements Serializable {
         this.categories = categories;
     }
 
-    public Set<OrderItem> getOrders() {
+    public List<OrderItem> getOrders() {
         return orders;
     }
 
-    public void setOrders(Set<OrderItem> orders) {
+    public void setOrders(List<OrderItem> orders) {
         this.orders = orders;
     }
 

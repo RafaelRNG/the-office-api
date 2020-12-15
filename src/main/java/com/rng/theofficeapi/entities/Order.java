@@ -1,6 +1,7 @@
 package com.rng.theofficeapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.aspectj.weaver.ast.Or;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -32,7 +33,7 @@ public class Order implements Serializable {
     private Payment payment;
 
     @OneToMany(mappedBy = "id.order")
-    private Set<OrderItem> products = new HashSet<>();
+    private List<OrderItem> products = new ArrayList<>();
 
     public Order(){}
 
@@ -92,11 +93,11 @@ public class Order implements Serializable {
         this.payment = payment;
     }
 
-    public Set<OrderItem> getProducts() {
+    public List<OrderItem> getProducts() {
         return products;
     }
 
-    public void setProducts(Set<OrderItem> products) {
+    public void setProducts(List<OrderItem> products) {
         this.products = products;
     }
 

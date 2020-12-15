@@ -1,5 +1,7 @@
 package com.rng.theofficeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,10 +19,11 @@ public class Category implements Serializable {
     private Long id;
     private String title;
 
-    public Category(){}
-
+    @JsonIgnore
     @ManyToMany(mappedBy = "categories")
     public List<Product> products = new ArrayList<>();
+
+    public Category(){}
 
     public Category(Long id, String title) {
         this.id = id;
