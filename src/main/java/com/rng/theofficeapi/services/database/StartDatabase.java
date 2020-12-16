@@ -54,9 +54,13 @@ public class StartDatabase {
 
         Product chamex = new Product(null, "Chamex", 15.35);
         Product usapel = new Product(null, "Usapel", 22.89);
+        Product papelBanheiro = new Product(null, "papelBanheiro", 17.89);
+        Product papelToalha = new Product(null, "papelToalha", 32.89);
 
         chamex.setCategories(Arrays.asList(sulfite));
         usapel.setCategories(Arrays.asList(couche));
+        papelBanheiro.setCategories(Arrays.asList(sulfite, kraft));
+        papelToalha.setCategories(Arrays.asList(vegetal, duplex, duoDesign));
 
         Client ryan = new Client(null, "Ryan", "38388989238928923", "ryan@mail.com", "3393237964");
         Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "076989087");
@@ -90,7 +94,7 @@ public class StartDatabase {
 
         salesmanRepository.saveAll(Arrays.asList(jim, pam, dwight, andy, stanley));
         categoryRepository.saveAll(Arrays.asList(sulfite, couche, reciclato, kraft, vegetal, duoDesign, duplex));
-        productRepository.saveAll(Arrays.asList(chamex, usapel));
+        productRepository.saveAll(Arrays.asList(chamex, usapel, papelToalha, papelBanheiro));
         clientRepository.saveAll(Arrays.asList(ryan, ashley));
         addressRepository.saveAll(Arrays.asList(address1, address2));
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));

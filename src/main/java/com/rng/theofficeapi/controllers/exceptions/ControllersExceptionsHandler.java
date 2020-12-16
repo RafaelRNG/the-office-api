@@ -1,5 +1,6 @@
 package com.rng.theofficeapi.controllers.exceptions;
 
+import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,13 @@ public class ControllersExceptionsHandler {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ErrorMessageFormat> dataIntegrityException(){
         ErrorMessageFormat errorMessageFormat = new ErrorMessageFormat(HttpStatus.BAD_REQUEST.value(), "There is a relationship with this object", new Date());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessageFormat);
+    }
+
+    @ExceptionHandler(LinesPerPageException.class)
+    public ResponseEntity<ErrorMessageFormat> linesPerPageException(){
+        ErrorMessageFormat errorMessageFormat = new ErrorMessageFormat(HttpStatus.BAD_REQUEST.value(), "Zero value is not possible for lines per page", new Date());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessageFormat);
     }

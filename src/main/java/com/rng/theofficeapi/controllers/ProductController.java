@@ -2,7 +2,9 @@ package com.rng.theofficeapi.controllers;
 
 import com.rng.theofficeapi.entities.Product;
 import com.rng.theofficeapi.services.ProductService;
+import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,11 +20,26 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity<List<Product>> findAll(){
+
         return ResponseEntity.ok(productService.findAll());
+    }
+
+    @GetMapping(path = "/pagination")
+    public ResponseEntity<Page<Product>> pagination(@RequestParam(name = "page", defaultValue = "0") Integer page,
+                                                    @RequestParam(name = "linesPerPage", defaultValue = "20") Integer linesPerPage,
+                                                    @RequestParam(name = "direction", defaultValue = "ASC") String direction,
+                                                    @RequestParam(name = "orderBy", defaultValue = "name") String orderBy){
+
+        try{
+            return ResponseEntity.ok(productService.pagination(page, linesPerPage, direction, orderBy));
+        } catch (IllegalArgumentException e){
+            throw new LinesPerPageException();
+        }
     }
 
     @GetMapping(path = "/{id}")
     public ResponseEntity<Product> findById(@PathVariable Long id){
+
         return ResponseEntity.ok(productService.findById(id));
     }
 
