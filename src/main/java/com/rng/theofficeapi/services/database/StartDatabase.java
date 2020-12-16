@@ -73,8 +73,10 @@ public class StartDatabase {
 
         Payment payment1 = new PaymentWithBillet(null, PaymentStatus.PENDING, order1, new Date(), new Date());
         Payment payment2 = new PaymentWithCard(null, PaymentStatus.CANCELED, order2, 15L);
+        Payment payment3 = new PaymentWithCard(null, PaymentStatus.PAID, order3, 15L);
         order1.setPayment(payment1);
         order2.setPayment(payment2);
+        order3.setPayment(payment3);
 
         jim.setOrders(Arrays.asList(order1));
         dwight.setOrders(Arrays.asList(order2));
@@ -92,7 +94,7 @@ public class StartDatabase {
         clientRepository.saveAll(Arrays.asList(ryan, ashley));
         addressRepository.saveAll(Arrays.asList(address1, address2));
         orderRepository.saveAll(Arrays.asList(order1, order2, order3));
-        paymentRepository.saveAll(Arrays.asList(payment1, payment2));
+        paymentRepository.saveAll(Arrays.asList(payment1, payment2, payment3));
         orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2));
     }
 }
