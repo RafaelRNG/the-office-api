@@ -4,6 +4,7 @@ import com.rng.theofficeapi.entities.Category;
 import com.rng.theofficeapi.repositories.CategoryRepository;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public class CategoryService {
     }
 
     public Category findById(Long id){
-        return categoryRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found, ID: " + id));
+        return categoryRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
     }
 
     public void save(Category category){
@@ -34,6 +35,10 @@ public class CategoryService {
     }
 
     public void deleteById(Long id){
-        categoryRepository.deleteById(id);
+        try{
+            categoryRepository.deleteById(id);
+        } catch(EmptyResultDataAccessException e){
+            throw new ObjectNotFoundException();
+        }
     }
 }
