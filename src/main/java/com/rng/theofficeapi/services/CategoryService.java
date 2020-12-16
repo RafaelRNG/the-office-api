@@ -21,4 +21,8 @@ public class CategoryService {
     public Category findById(Long id){
         return categoryRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found, ID: " + id));
     }
+
+    public void save(Category category){
+        categoryRepository.save(category);
+    }
 }
