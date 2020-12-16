@@ -19,6 +19,7 @@ public abstract class Payment implements Serializable {
 
     private Integer paymentStatus;
 
+    @JsonIgnore
     @MapsId
     @OneToOne
     @JoinColumn(name = "order_id")

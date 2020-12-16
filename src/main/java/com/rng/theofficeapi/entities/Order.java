@@ -32,7 +32,6 @@ public class Order implements Serializable {
     @ManyToOne
     private Address address;
 
-    @JsonIgnore
     @OneToOne(mappedBy="order", cascade = CascadeType.ALL)
     private Payment payment;
 
