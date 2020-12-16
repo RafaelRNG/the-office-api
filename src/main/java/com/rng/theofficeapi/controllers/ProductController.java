@@ -1,5 +1,6 @@
 package com.rng.theofficeapi.controllers;
 
+import com.rng.theofficeapi.dto.ProductDTO;
 import com.rng.theofficeapi.entities.Product;
 import com.rng.theofficeapi.services.ProductService;
 import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -44,14 +46,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Product product){
+    public ResponseEntity<?> save(@Valid @RequestBody ProductDTO productDTO){
+        Product product = productService.fromDTO(productDTO);
         productService.save(product);
 
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(product.getId()).toUri()).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Product product){
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO){
+        Product product = productService.fromDTO(productDTO);
         productService.update(id, product);
 
         return ResponseEntity.noContent().build();
