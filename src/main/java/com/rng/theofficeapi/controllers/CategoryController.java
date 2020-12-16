@@ -35,10 +35,17 @@ public class CategoryController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri()).build();
     }
 
-    @PutMapping(path ="/{id}")
+    @PutMapping(path = "/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Category category){
         categoryService.update(id, category);
 
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id){
+        categoryService.deleteById(id);
+        
         return ResponseEntity.noContent().build();
     }
 }
