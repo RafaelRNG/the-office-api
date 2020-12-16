@@ -25,4 +25,11 @@ public class CategoryService {
     public void save(Category category){
         categoryRepository.save(category);
     }
+
+    public void update(Long id, Category newCategory){
+        Category oldCategory = this.findById(id);
+        newCategory.setId(oldCategory.getId());
+
+        categoryRepository.save(newCategory);
+    }
 }
