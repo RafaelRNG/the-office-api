@@ -23,7 +23,7 @@ public class ProductDTO {
     private Double price;
 
     @NotNull(message = "null is not allowed")
-    @NotEmpty
+    @NotEmpty(message = "Must not be empty")
     private List<Long> categories = new ArrayList<>();
 
     public ProductDTO(){}

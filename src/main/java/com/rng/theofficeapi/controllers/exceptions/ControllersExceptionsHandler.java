@@ -5,6 +5,8 @@ import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -32,5 +34,16 @@ public class ControllersExceptionsHandler {
         ErrorMessageFormat errorMessageFormat = new ErrorMessageFormat(HttpStatus.BAD_REQUEST.value(), "Zero value is not possible for lines per page", new Date());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessageFormat);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<ErrorMessageFormat> methodArgumentNotValidException(MethodArgumentNotValidException notValidException){
+        ValidationError validationError = new ValidationError(HttpStatus.BAD_REQUEST.value(), "Error in evaluations", new Date());
+
+        for(FieldError message: notValidException.getBindingResult().getFieldErrors()){
+            validationError.addError(new ValidationMessage(message.getField(), message.getDefaultMessage()));
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
     }
 }
