@@ -27,10 +27,11 @@ public class ProductController {
     }
 
     @GetMapping(path = "/pagination")
-    public ResponseEntity<Page<Product>> pagination(@RequestParam(name = "page", defaultValue = "0") Integer page,
-                                                    @RequestParam(name = "linesPerPage", defaultValue = "20") Integer linesPerPage,
-                                                    @RequestParam(name = "direction", defaultValue = "ASC") String direction,
-                                                    @RequestParam(name = "orderBy", defaultValue = "name") String orderBy){
+    public ResponseEntity<Page<Product>> pagination(
+            @RequestParam(name = "page", defaultValue = "0") Integer page,
+            @RequestParam(name = "linesPerPage", defaultValue = "20") Integer linesPerPage,
+            @RequestParam(name = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(name = "orderBy", defaultValue = "name") String orderBy){
 
         try{
             return ResponseEntity.ok(productService.pagination(page, linesPerPage, direction, orderBy));
