@@ -1,5 +1,7 @@
 package com.rng.theofficeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Client implements Serializable {
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private Address address;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "client")
     private List<Order> orders = new ArrayList<>();
 

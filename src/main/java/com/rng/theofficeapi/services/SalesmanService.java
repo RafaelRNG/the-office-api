@@ -1,6 +1,9 @@
 package com.rng.theofficeapi.services;
 
+import com.rng.theofficeapi.dto.SalesmanDTO;
+import com.rng.theofficeapi.entities.Order;
 import com.rng.theofficeapi.entities.Salesman;
+import com.rng.theofficeapi.repositories.OrderRepository;
 import com.rng.theofficeapi.repositories.SalesmanRepository;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SalesmanService {
@@ -15,13 +19,24 @@ public class SalesmanService {
     @Autowired
     private SalesmanRepository salesmanRepository;
 
-    public List<Salesman> findAll(){
+    @Autowired
+    private OrderRepository orderRepository;
 
-        return salesmanRepository.findAll();
+    public List<SalesmanDTO> findAll(){
+        List<Salesman> salesmen = salesmanRepository.findAll();
+
+        List<SalesmanDTO> salesmanDTOS = salesmen.stream().map(salesman -> {
+            return new SalesmanDTO(salesman.getId(), salesman.getName(), salesman.getIdentification(), salesman.getOrders());
+        }).collect(Collectors.toList());
+
+        return salesmanDTOS;
     }
 
-    public Salesman findById(Long id){
-        return salesmanRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
+    public SalesmanDTO findById(Long id){
+
+        Salesman salesman = salesmanRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
+
+        return new SalesmanDTO(salesman.getId(), salesman.getName(), salesman.getIdentification(), salesman.getOrders());
     }
 
     public void save(Salesman salesman){
@@ -30,7 +45,7 @@ public class SalesmanService {
     }
 
     public void update(Long id, Salesman newSalesman){
-        Salesman oldSalesman = this.findById(id);
+        Salesman oldSalesman = salesmanRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
         newSalesman.setId(oldSalesman.getId());
 
         salesmanRepository.save(newSalesman);
@@ -42,5 +57,9 @@ public class SalesmanService {
         }catch (EmptyResultDataAccessException e){
             throw new ObjectNotFoundException();
         }
+    }
+
+    public Salesman fromDTO(SalesmanDTO salesmanDTO){
+        return new Salesman(salesmanDTO.getId(), salesmanDTO.getName(), salesmanDTO.getIdentification());
     }
 }
