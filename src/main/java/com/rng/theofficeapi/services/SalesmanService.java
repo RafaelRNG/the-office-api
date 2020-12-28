@@ -1,7 +1,6 @@
 package com.rng.theofficeapi.services;
 
 import com.rng.theofficeapi.dto.SalesmanDTO;
-import com.rng.theofficeapi.entities.Order;
 import com.rng.theofficeapi.entities.Salesman;
 import com.rng.theofficeapi.repositories.OrderRepository;
 import com.rng.theofficeapi.repositories.SalesmanRepository;
@@ -25,11 +24,9 @@ public class SalesmanService {
     public List<SalesmanDTO> findAll(){
         List<Salesman> salesmen = salesmanRepository.findAll();
 
-        List<SalesmanDTO> salesmanDTOS = salesmen.stream().map(salesman -> {
+        return salesmen.stream().map(salesman -> {
             return new SalesmanDTO(salesman.getId(), salesman.getName(), salesman.getIdentification(), salesman.getOrders());
         }).collect(Collectors.toList());
-
-        return salesmanDTOS;
     }
 
     public SalesmanDTO findById(Long id){

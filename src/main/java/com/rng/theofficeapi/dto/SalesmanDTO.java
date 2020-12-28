@@ -65,11 +65,12 @@ public class SalesmanDTO {
         this.orders = orders;
     }
 
-    public Client getCustomerRequest(){
+    public List<Client> getCustomerRequest(){
+        List<Client> clients = new ArrayList<>();
         for(Order order : this.orders){
-            return order.getClient();
+            clients.add(order.getClient());
         }
-        return null;
+        return clients;
     }
 
     @Override
