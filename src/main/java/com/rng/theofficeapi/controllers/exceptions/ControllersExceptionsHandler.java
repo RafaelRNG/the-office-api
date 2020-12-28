@@ -1,5 +1,6 @@
 package com.rng.theofficeapi.controllers.exceptions;
 
+import com.rng.theofficeapi.services.exceptions.AddressException;
 import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -45,5 +46,12 @@ public class ControllersExceptionsHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationError);
+    }
+
+    @ExceptionHandler(AddressException.class)
+    public ResponseEntity<ErrorMessageFormat> addressException(){
+        ErrorMessageFormat errorMessageFormat = new ErrorMessageFormat(HttpStatus.BAD_REQUEST.value(), "This customer already has an address, says a change or assigns to another customer", new Date());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessageFormat);
     }
 }
