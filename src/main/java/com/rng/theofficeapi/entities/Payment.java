@@ -1,6 +1,7 @@
 package com.rng.theofficeapi.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.rng.theofficeapi.entities.enums.PaymentStatus;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_abstract_payment")
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type")
 public abstract class Payment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,12 +43,12 @@ public abstract class Payment implements Serializable {
         this.id = id;
     }
 
-    public Integer getPaymentStatus() {
-        return paymentStatus;
+    public PaymentStatus getPaymentStatus() {
+        return PaymentStatus.toEnum(this.paymentStatus);
     }
 
-    public void setPaymentStatus(Integer paymentStatus) {
-        this.paymentStatus = paymentStatus;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus.getCode();
     }
 
     public Order getOrder() {

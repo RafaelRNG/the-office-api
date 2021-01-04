@@ -22,6 +22,7 @@ public class Client implements Serializable {
     private String email;
     private String cellPhone;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
     private Address address;
 
@@ -88,6 +89,7 @@ public class Client implements Serializable {
     }
 
     public List<Order> getOrders() {
+
         return orders;
     }
 

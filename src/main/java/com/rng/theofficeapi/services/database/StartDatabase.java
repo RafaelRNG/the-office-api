@@ -74,7 +74,6 @@ public class StartDatabase {
         Order order1 = new Order(null, new Date(), ryan, jim, address1);
         Order order2 = new Order(null, new Date(), ryan, dwight, ryan.getAddress());
         Order order3 = new Order(null, new Date(),ashley, pam, ashley.getAddress());
-        Order order4 = new Order(null, new Date(),ashley, jim, ashley.getAddress());
 
         Payment payment1 = new PaymentWithBillet(null, PaymentStatus.PENDING, order1, new Date(), new Date());
         Payment payment2 = new PaymentWithCard(null, PaymentStatus.CANCELED, order2, 15L);
@@ -98,7 +97,7 @@ public class StartDatabase {
         productRepository.saveAll(Arrays.asList(chamex, usapel, papelToalha, papelBanheiro));
         clientRepository.saveAll(Arrays.asList(ryan, ashley));
         addressRepository.saveAll(Arrays.asList(address1, address2));
-        orderRepository.saveAll(Arrays.asList(order1, order2, order3, order4));
+        orderRepository.saveAll(Arrays.asList(order1, order2, order3));
         paymentRepository.saveAll(Arrays.asList(payment1, payment2, payment3));
         orderItemRepository.saveAll(Arrays.asList(orderItem1, orderItem2));
     }

@@ -1,5 +1,7 @@
 package com.rng.theofficeapi.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,6 +20,7 @@ public class Salesman implements Serializable {
     private String name;
     private String identification;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "salesman")
     private List<Order> orders = new ArrayList<>();
 
