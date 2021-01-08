@@ -32,7 +32,9 @@ public class AddressDTO {
     private String complement;
 
     @NotNull(message = "null is not allowed")
-    private Long Client;
+    private Long client;
+
+    public AddressDTO(){}
 
     public AddressDTO(Long id, String street, String number, String neighborhood, String city, String state, String complement, Long client) {
         this.id = id;
@@ -42,7 +44,7 @@ public class AddressDTO {
         this.city = city;
         this.state = state;
         this.complement = complement;
-        this.Client = client;
+        this.client = client;
     }
 
     public Long getId() {
@@ -102,10 +104,10 @@ public class AddressDTO {
     }
 
     public Long getClient() {
-        return Client;
+        return client;
     }
 
     public void setClient(Long client) {
-        Client = client;
+        this.client = client;
     }
 }

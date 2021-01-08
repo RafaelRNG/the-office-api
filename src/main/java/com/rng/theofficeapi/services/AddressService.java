@@ -1,9 +1,11 @@
 package com.rng.theofficeapi.services;
 
 import com.rng.theofficeapi.dto.AddressDTO;
+import com.rng.theofficeapi.dto.ClientDTO;
 import com.rng.theofficeapi.entities.Address;
 import com.rng.theofficeapi.entities.Client;
 import com.rng.theofficeapi.repositories.AddressRepository;
+import com.rng.theofficeapi.repositories.ClientRepository;
 import com.rng.theofficeapi.services.exceptions.AddressException;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class AddressService {
 
     @Autowired
     private ClientService clientService;
+
+    @Autowired
+    private ClientRepository clientRepository;
 
     public List<Address> findAll(){
         return addressRepository.findAll();
@@ -50,7 +55,8 @@ public class AddressService {
     }
 
     public Address fromDTO(AddressDTO addressDTO){
-        Client client = clientService.findById(addressDTO.getClient());
+        ClientDTO clientDTO = clientService.findById(addressDTO.getClient());
+        Client client = clientService.fromDTO(clientDTO);
 
         if(client.getAddress() == null){
             return new Address(addressDTO.getId(), addressDTO.getStreet(), addressDTO.getNumber(), addressDTO.getNeighborhood(), addressDTO.getCity(), addressDTO.getState(), addressDTO.getComplement(), client);

@@ -1,11 +1,13 @@
 package com.rng.theofficeapi.services;
 
+import com.rng.theofficeapi.dto.ClientDTO;
 import com.rng.theofficeapi.dto.OrderDTO;
 import com.rng.theofficeapi.dto.SalesmanDTO;
 import com.rng.theofficeapi.entities.*;
 import com.rng.theofficeapi.entities.enums.PaymentStatus;
 import com.rng.theofficeapi.repositories.*;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
+import com.rng.theofficeapi.services.exceptions.OrderWithoutAddressException;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,13 +39,10 @@ public class OrderService {
     private ClientService clientService;
 
     @Autowired
-    private SalesmanService salesmanService;
-
-    @Autowired
     private SalesmanRepository salesmanRepository;
 
     public Order findById(Long id) {
-        return orderRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found, ID: " + id));
+        return orderRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
     }
 
     public void save(Order order) {
@@ -75,12 +74,19 @@ public class OrderService {
     }
 
     public Order fromDTO(OrderDTO orderDTO){
-        Client client = clientService.findById(orderDTO.getClient());
+        ClientDTO clientDTO = clientService.findById(orderDTO.getClient());
+        Client client = new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getCnpj(), clientDTO.getEmail(), clientDTO.getCellPhone());
+        client.setAddress(clientDTO.getAddress());
         Salesman salesman = salesmanRepository.findById(orderDTO.getSalesman()).orElseThrow(() -> new ObjectNotFoundException());
 
-        Order order = new Order(orderDTO.getId(), orderDTO.getDate(), client, salesman, client.getAddress());
-        order.setPayment(orderDTO.getPayment());
-        order.setProducts(orderDTO.getProducts());
-        return order;
+        if(client.getAddress() != null){
+
+            Order order = new Order(orderDTO.getId(), orderDTO.getDate(), client, salesman, client.getAddress());
+            order.setPayment(orderDTO.getPayment());
+            order.setProducts(orderDTO.getProducts());
+            return order;
+        } else {
+            throw new OrderWithoutAddressException();
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.rng.theofficeapi.controllers;
 
+import com.rng.theofficeapi.dto.ClientDTO;
 import com.rng.theofficeapi.entities.Client;
 import com.rng.theofficeapi.services.ClientService;
 import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -40,19 +42,21 @@ public class ClientController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Client> findById(@PathVariable Long id){
+    public ResponseEntity<ClientDTO> findById(@PathVariable Long id){
         return ResponseEntity.ok(clientService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody Client client){
+    public ResponseEntity<?> save(@Valid @RequestBody ClientDTO clientDTO){
+        Client client = clientService.fromDTO(clientDTO);
         clientService.save(client);
 
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(client.getId()).toUri()).build();
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Client client){
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody ClientDTO clientDTO){
+        Client client = clientService.fromDTO(clientDTO);
         clientService.update(id, client);
 
         return ResponseEntity.noContent().build();

@@ -1,5 +1,6 @@
 package com.rng.theofficeapi.services;
 
+import com.rng.theofficeapi.dto.ClientDTO;
 import com.rng.theofficeapi.entities.Client;
 import com.rng.theofficeapi.repositories.ClientRepository;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
@@ -28,9 +29,14 @@ public class ClientService {
         return clientRepository.findAll(pageRequest);
     }
 
-    public Client findById(Long id){
+    public ClientDTO findById(Long id){
 
-        return clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException("Object not found, ID: " + id));
+        Client client = clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
+
+        ClientDTO clientDTO = new ClientDTO(client.getId(), client.getName(), client.getCnpj(), client.getEmail(), client.getCellPhone(), client.getAddress());
+        clientDTO.setOrders(client.getOrders());
+
+        return clientDTO;
     }
 
     public void save(Client client) {
@@ -39,8 +45,10 @@ public class ClientService {
     }
 
     public void update(Long id, Client newClient){
-        Client oldClient = this.findById(id);
-        newClient.setId(oldClient.getId());
+        ClientDTO oldClientDTO = this.findById(id);
+        newClient.setId(oldClientDTO.getId());
+        newClient.setAddress(oldClientDTO.getAddress());
+        newClient.setEmail(oldClientDTO.getEmail());
 
         clientRepository.save(newClient);
     }
@@ -48,5 +56,12 @@ public class ClientService {
     public void deleteById(Long id){
 
         clientRepository.deleteById(id);
+    }
+
+    public Client fromDTO(ClientDTO clientDTO) {
+        Client client = new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getCnpj(), clientDTO.getEmail(), clientDTO.getCellPhone());
+        client.setAddress(clientDTO.getAddress());
+
+        return client;
     }
 }
