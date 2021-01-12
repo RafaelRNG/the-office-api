@@ -6,6 +6,7 @@ import com.rng.theofficeapi.dto.SalesmanDTO;
 import com.rng.theofficeapi.entities.*;
 import com.rng.theofficeapi.entities.enums.PaymentStatus;
 import com.rng.theofficeapi.repositories.*;
+import com.rng.theofficeapi.services.email.EmailService;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import com.rng.theofficeapi.services.exceptions.OrderWithoutAddressException;
 import org.aspectj.weaver.ast.Or;
@@ -41,6 +42,9 @@ public class OrderService {
     @Autowired
     private SalesmanRepository salesmanRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
     }
@@ -64,6 +68,7 @@ public class OrderService {
             orderItem.setOrder(order);
         }
 
+        emailService.sendOrderConfirmationEmail(order);
         orderItemRepository.saveAll(order.getProducts());
     }
 

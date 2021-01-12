@@ -62,7 +62,7 @@ public class StartDatabase {
         papelBanheiro.setCategories(Arrays.asList(sulfite, kraft));
         papelToalha.setCategories(Arrays.asList(vegetal, duplex, duoDesign));
 
-        Client ryan = new Client(null, "Ryan", "38388989238928923", "ryan@mail.com", "3393237964");
+        Client ryan = new Client(null, "Ryan", "38388989238928923", "rafael.gomila@hotmail.com", "3393237964");
         Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "076989087");
 
         Address address1 = new Address(null, "Rua srBagner", "265", "CAPKNG", "NEW YORK","reuig", null, ryan);
