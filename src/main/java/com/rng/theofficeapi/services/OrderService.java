@@ -80,7 +80,7 @@ public class OrderService {
 
     public Order fromDTO(OrderDTO orderDTO){
         ClientDTO clientDTO = clientService.findById(orderDTO.getClient());
-        Client client = new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getCnpj(), clientDTO.getEmail(), clientDTO.getCellPhone());
+        Client client = new Client(clientDTO.getId(), clientDTO.getName(), clientDTO.getCnpj(), clientDTO.getEmail(), clientDTO.getCellPhone(), clientDTO.getPassword());
         client.setAddress(clientDTO.getAddress());
         Salesman salesman = salesmanRepository.findById(orderDTO.getSalesman()).orElseThrow(() -> new ObjectNotFoundException());
 

@@ -1,5 +1,7 @@
 package com.rng.theofficeapi.configs;
 
+import com.rng.theofficeapi.security.JWTAuthenticationFilter;
+import com.rng.theofficeapi.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -24,6 +27,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
+    @Autowired
+    private JWTUtil jwtUtil;
+
     @Override
     public void configure(HttpSecurity httpSecurity) throws Exception {
 
@@ -31,7 +40,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             httpSecurity.headers().frameOptions().disable();
         }
 
-        httpSecurity.cors().and().csrf().disable();
+        httpSecurity
+                .cors()
+                .and()
+                .csrf()
+                .disable();
 
         httpSecurity
                 .authorizeRequests()
@@ -45,16 +58,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated();
 
         httpSecurity
+                .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+
+        httpSecurity
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    public void configure(AuthenticationManagerBuilder managerBuilder)throws Exception {
-        managerBuilder.userDetailsService(null).passwordEncoder(this.bCryptPasswordEncoder());
+    @Override
+    public void configure(AuthenticationManagerBuilder managerBuilder) throws Exception {
+        managerBuilder.userDetailsService(userDetailsService).passwordEncoder(this.bCryptPasswordEncoder());
     }
 
     @Bean
-    CorsConfigurationSource corsConfigurationSource() {
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration().applyPermitDefaultValues();
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTION", "HEAD"));
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

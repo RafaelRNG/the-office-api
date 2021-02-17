@@ -2,9 +2,11 @@ package com.rng.theofficeapi.service.database;
 
 import com.rng.theofficeapi.entities.*;
 import com.rng.theofficeapi.entities.enums.PaymentStatus;
+import com.rng.theofficeapi.entities.enums.Profiles;
 import com.rng.theofficeapi.repositories.*;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -37,6 +39,9 @@ public class StartDatabase {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public void database(){
         Salesman jim = new Salesman(null, "Jim Halpert", "34g3k1049fd04");
         Salesman pam = new Salesman(null, "Pam Beesly", "938278fduf2903");
@@ -62,8 +67,9 @@ public class StartDatabase {
         papelBanheiro.setCategories(Arrays.asList(sulfite, kraft));
         papelToalha.setCategories(Arrays.asList(vegetal, duplex, duoDesign));
 
-        Client ryan = new Client(null, "Ryan", "38388989238928923", "rafael.gomila@hotmail.com", "3393237964");
-        Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "076989087");
+        Client ryan = new Client(null, "Ryan", "38388989238928923", "rafael.gomila@hotmail.com", "3393237964", bCryptPasswordEncoder.encode("12345"));
+        Client ashley = new Client(null, "Ashley", "45059249382789", "Ashley@mail.com", "076989087", bCryptPasswordEncoder.encode("12345"));
+        ashley.addProfile(Profiles.ROLE_ADMIN);
 
         Address address1 = new Address(null, "Rua srBagner", "265", "CAPKNG", "NEW YORK","reuig", null, ryan);
         Address address2 = new Address(null, "Rua MCDonald", "396", "flangfung", "washington","dc", "next time", ashley);

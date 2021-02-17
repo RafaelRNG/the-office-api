@@ -24,6 +24,8 @@ public class ClientDTO {
     @Email(message = "must be a well-formed email address")
     private String email;
 
+    private String password;
+
     @NotNull(message = "null is not allowed")
     private String cellPhone;
 
@@ -72,6 +74,14 @@ public class ClientDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCellPhone() {
