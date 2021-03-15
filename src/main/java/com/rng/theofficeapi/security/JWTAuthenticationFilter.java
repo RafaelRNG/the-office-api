@@ -2,6 +2,7 @@ package com.rng.theofficeapi.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rng.theofficeapi.dto.CredentialsDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,6 +1,7 @@
 package com.rng.theofficeapi.configs;
 
 import com.rng.theofficeapi.security.JWTAuthenticationFilter;
+import com.rng.theofficeapi.security.JWTAuthorizationFilter;
 import com.rng.theofficeapi.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -59,6 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         httpSecurity
                 .addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        httpSecurity
+                .addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
         httpSecurity
                 .sessionManagement()
