@@ -7,6 +7,7 @@ import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -21,12 +22,14 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Client>> findAll(){
 
         return ResponseEntity.ok(clientService.findAll());
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @GetMapping(path = "/pagination")
     public ResponseEntity<Page<Client>> pagination(
             @RequestParam(name = "page", defaultValue = "0") Integer page,

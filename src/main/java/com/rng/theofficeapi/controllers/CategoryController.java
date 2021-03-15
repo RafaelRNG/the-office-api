@@ -4,6 +4,7 @@ import com.rng.theofficeapi.entities.Category;
 import com.rng.theofficeapi.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,6 +29,7 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.findById(id));
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @PostMapping
     public ResponseEntity<?> save(@RequestBody Category category){
         categoryService.save(category);
@@ -35,6 +37,7 @@ public class CategoryController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(category.getId()).toUri()).build();
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @PutMapping(path = "/{id}")
     public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Category category){
         categoryService.update(id, category);
@@ -42,6 +45,7 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
     @DeleteMapping(path = "/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id){
         categoryService.deleteById(id);
