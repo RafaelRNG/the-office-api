@@ -1,9 +1,6 @@
 package com.rng.theofficeapi.controllers.exceptions;
 
-import com.rng.theofficeapi.services.exceptions.AddressException;
-import com.rng.theofficeapi.services.exceptions.LinesPerPageException;
-import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
-import com.rng.theofficeapi.services.exceptions.OrderWithoutAddressException;
+import com.rng.theofficeapi.services.exceptions.*;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,5 +58,11 @@ public class ControllersExceptionsHandler {
         ErrorMessageFormat errorMessageFormat = new ErrorMessageFormat(HttpStatus.BAD_REQUEST.value(), "order address is required", new Date());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMessageFormat);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<ErrorMessageFormat> authorizationException() {
+        ErrorMessageFormat errorMessageFormat = new ErrorMessageFormat(HttpStatus.FORBIDDEN.value(), "Not Authorized", new Date());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorMessageFormat);
     }
 }

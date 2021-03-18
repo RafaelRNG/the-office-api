@@ -2,8 +2,12 @@ package com.rng.theofficeapi.services;
 
 import com.rng.theofficeapi.dto.ClientDTO;
 import com.rng.theofficeapi.entities.Client;
+import com.rng.theofficeapi.entities.enums.Profiles;
 import com.rng.theofficeapi.repositories.ClientRepository;
+import com.rng.theofficeapi.security.UserDetailsSecurity;
+import com.rng.theofficeapi.services.exceptions.AuthorizationException;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
+import com.rng.theofficeapi.services.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +38,11 @@ public class ClientService {
     }
 
     public ClientDTO findById(Long id){
+
+        UserDetailsSecurity user = UserService.authenticated();
+        if(user == null || !user.hasRole(Profiles.ROLE_ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso negado!");
+        }
 
         Client client = clientRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
 

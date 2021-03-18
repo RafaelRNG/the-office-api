@@ -62,4 +62,8 @@ public class UserDetailsSecurity implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public boolean hasRole(Profiles profiles) {
+        return this.getAuthorities().contains(new SimpleGrantedAuthority(profiles.getTitle()));
+    }
 }
