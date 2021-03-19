@@ -6,11 +6,17 @@ import com.rng.theofficeapi.dto.SalesmanDTO;
 import com.rng.theofficeapi.entities.*;
 import com.rng.theofficeapi.entities.enums.PaymentStatus;
 import com.rng.theofficeapi.repositories.*;
+import com.rng.theofficeapi.security.UserDetailsSecurity;
 import com.rng.theofficeapi.services.email.EmailService;
+import com.rng.theofficeapi.services.exceptions.AuthorizationException;
 import com.rng.theofficeapi.services.exceptions.ObjectNotFoundException;
 import com.rng.theofficeapi.services.exceptions.OrderWithoutAddressException;
+import com.rng.theofficeapi.services.security.UserService;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -44,6 +50,20 @@ public class OrderService {
 
     @Autowired
     private EmailService emailService;
+
+    public Page<Order> pagination(Integer page, Integer linesPerPage, String direction, String orderBy) {
+
+        UserDetailsSecurity userDetailsSecurity = UserService.authenticated();
+        if(userDetailsSecurity == null) {
+            throw new AuthorizationException();
+        }
+
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
+
+        ClientDTO clientDTO = clientService.findById(userDetailsSecurity.getId());
+
+        return orderRepository.findByClient(clientDTO, pageRequest);
+    }
 
     public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new ObjectNotFoundException());
