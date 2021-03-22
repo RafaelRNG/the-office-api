@@ -51,6 +51,9 @@ public class OrderService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private ClientRepository clientRepository;
+
     public Page<Order> pagination(Integer page, Integer linesPerPage, String direction, String orderBy) {
 
         UserDetailsSecurity userDetailsSecurity = UserService.authenticated();
@@ -60,9 +63,9 @@ public class OrderService {
 
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 
-        ClientDTO clientDTO = clientService.findById(userDetailsSecurity.getId());
+        Client client = clientRepository.findById(userDetailsSecurity.getId()).get();
 
-        return orderRepository.findByClient(clientDTO, pageRequest);
+        return orderRepository.findByClient(client, pageRequest);
     }
 
     public Order findById(Long id) {

@@ -21,7 +21,7 @@ public class OrderController {
     public ResponseEntity<Page<Order>> pagination(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
-            @RequestParam(value = "direction", defaultValue = "ASC") String direction,
+            @RequestParam(value = "direction", defaultValue = "DESC") String direction,
             @RequestParam(value = "orderBy", defaultValue = "id") String orderBy
     ) {
 
